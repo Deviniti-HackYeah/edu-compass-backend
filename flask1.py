@@ -23,7 +23,7 @@ app = Flask(__name__)
 # openai.api_type = "azure"
 # openai.api_base = "https://roc3demo.openai.azure.com/"
 # openai.api_version = "2023-07-01-preview"
-openai.api_key = "***REMOVED***" #os.environ.get("OPENAI_API_KEY")
+openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 
 szkoly = {}
