@@ -312,4 +312,8 @@ def survey():
     prompt = buildPromptFromSurvey(data)
 
     print("Prompt: " + prompt + "\n")
+<<<<<<< HEAD
     return chat2(prompt)
+=======
+    return chat2(prompt)
+>>>>>>> 185ce8af99e9c0adf8165cc0a0aaf0775d4d85be
