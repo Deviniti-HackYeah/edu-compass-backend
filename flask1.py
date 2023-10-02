@@ -20,10 +20,10 @@ promptKara = "Jesteś koleżanką, która wraz z kolegą pomaga wybrać szkołę
 
 app = Flask(__name__)
 
-openai.api_type = "azure"
-openai.api_base = "https://roc3demo.openai.azure.com/"
-openai.api_version = "2023-07-01-preview"
-openai.api_key = os.environ.get("OPENAI_API_KEY")
+# openai.api_type = "azure"
+# openai.api_base = "https://roc3demo.openai.azure.com/"
+# openai.api_version = "2023-07-01-preview"
+openai.api_key = "***REMOVED***" #os.environ.get("OPENAI_API_KEY")
 
 
 szkoly = {}
@@ -48,7 +48,8 @@ def callChatWithCache(messages):
         pass
 
     response = openai.ChatCompletion.create(
-      engine="hackyeah",
+    #   engine="hackyeah",
+      model="gpt-3.5-turbo", 
       messages = messages,
       temperature=0.7,
       max_tokens=800,
@@ -87,7 +88,7 @@ def callSerper(message):
        "hl": "pl"
     })
     headers = {
-        'X-API-KEY': os.environ("SERPER_KEY"),
+        'X-API-KEY': os.environ.get("SERPER_KEY"),
         'Content-Type': 'application/json'
     }
 
@@ -169,9 +170,13 @@ def chat2(q):
         },
     ]
 
-    response1 = callChatWithCache(message1)
+    miasta = None
+    try:
+        response1 = callChatWithCache(message1)
     
-    miasta = json.loads(response1)
+        miasta = json.loads(response1)
+    except:
+        pass
 
     message2 = [
        {"role": "user", 
@@ -192,14 +197,21 @@ def chat2(q):
 
 
     extras = {}
-    if (zawody != None and len(zawody) > 0):
-        extras["zawody"] = zawody[list(zawody)[0]]
+
+    try:
+        if (zawody != None and len(list(zawody)) > 0):
+            extras["zawody"] = zawody[list(zawody)[0]]
+    except:
+        pass
     
     if (miasta != None and len(miasta) > 0):
         extras["miasta"] = miasta
 
-    if (kierunki != None and len(kierunki) > 0):
-        extras["kierunki_studiow"] = kierunki[list(kierunki)[0]]
+    try:
+        if (kierunki != None and len(kierunki) > 0):
+            extras["kierunki_studiow"] = kierunki[list(kierunki)[0]]
+    except:
+        pass
     
     return jsonify({"chats": 
     [
